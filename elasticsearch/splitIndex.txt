@@ -1,0 +1,35 @@
+PUT /conductor_prod_workflow_gen_2020/_settings
+{
+  "settings": {
+    "index.blocks.write": true
+  }
+}
+  
+Split it
+ 
+POST /conductor_prod_workflow_gen_2020/_split/split-conductor_prod_workflow_gen_2020
+{
+  "settings": {
+    "index.number_of_shards": 6,
+    "index.number_of_replicas": 1
+  }
+}
+  
+Dont block writes on the split - may not be necessary
+ 
+PUT split-conductor_prod_workflow_gen_2020/_settings?wait_for_completion=false
+{
+  "settings": {
+    "index.blocks.write": false
+  }
+}
+ 
+ Alias the split-index with the original index name and delete the original index
+ 
+POST /_aliases
+{
+    "actions" : [
+        { "add":  { "index": "split-conductor_prod_workflow_gen_2020", "alias": "conductor_prod_workflow","is_write_index":true } },
+        { "remove_index": { "index": "conductor_prod_workflow_gen_2020" }}  
+    ]
+}

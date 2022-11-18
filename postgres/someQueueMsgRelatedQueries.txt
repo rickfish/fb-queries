@@ -1,0 +1,21 @@
+SELECT COUNT(*) FROM conductor_stage.queue_message WHERE queue_name = 'WPM_COMMON_CLOSE_INVENTORY_TASK';
+
+SELECT COUNT(*) as COUNT, queue_name FROM conductor_stage.queue_message GROUP BY queue_name;
+
+SELECT DISTINCT queue_name FROM conductor_stage.queue_message;
+SELECT COUNT(*) FROM conductor_stage.queue_message WHERE queue_name = 'EIT_EEB_BUS_EXCEPTION_GENERATE_TASK';
+SELECT COUNT(*) FROM conductor_stage.queue_message WHERE queue_name = 'WPM_COMMON_CLOSE_INVENTORY_TASK';
+SELECT * FROM conductor_stage.queue_message WHERE queue_name = '_deciderQueue' ORDER BY created_on desc;
+
+DELETE FROM conductor_stage.queue_message WHERE queue_name = '_deciderQueue' AND created_on < '2020-02-01';
+
+SELECT message_id, priority, payload FROM conductor_stage.queue_message WHERE queue_name = 'SUB_WORKFLOW' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT 10;
+SELECT COUNT(*) FROM conductor_stage.queue_message WHERE queue_name = 'SUB_WORKFLOW' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::INTERVAL);
+SELECT * FROM conductor_stage.queue_message WHERE queue_name = 'SUB_WORKFLOW' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::INTERVAL) ORDER BY deliver_on desc;
+SELECT COUNT(*) FROM conductor_stage.queue_message;
+
+SELECT message_id, priority, payload FROM conductor_stage.queue_message WHERE queue_name = 'EIT_EEB_BUS_EXCEPTION_GENERATE_TASK' AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) AND popped = false ORDER BY priority DESC, deliver_on, created_on LIMIT 100;
+SELECT COUNT(*) FROM conductor_stage.queue_message WHERE queue_name = 'WPM_COMMON_HUMAN_TASK' AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) AND popped = false;
+SELECT COUNT(*) FROM conductor_stage.queue_message WHERE queue_name = 'WPM_COMMON_CLOSE_INVENTORY_TASK' AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) AND popped = false;
+SELECT * FROM conductor_stage.queue_message WHERE queue_name = 'WPM_COMMON_CLOSE_INVENTORY_TASK' AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) AND popped = false;
+SELECT COUNT(*) FROM conductor_stage.queue_message WHERE queue_name = 'EIT_EEB_BUS_EXCEPTION_GENERATE_TASK' AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) AND popped = false;

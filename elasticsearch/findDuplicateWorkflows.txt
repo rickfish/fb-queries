@@ -1,0 +1,13 @@
+GET conductor_stage_workflow/_search
+{
+   "size": 0,
+   "aggs": {
+      "dupids": {
+         "terms": {
+            "field": "_id",
+            "size":1000,
+            "min_doc_count":2
+         }
+      }
+   }
+}

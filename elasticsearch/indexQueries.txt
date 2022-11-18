@@ -1,0 +1,7 @@
+GET _cat/indices/conductor_stage_task_*?v&s=index
+GET _cat/indices/conductor_stage_workflow_*?v&s=index
+
+GET _cat/indices/conductor_stage_workflow_*?v&s=pri.store.size
+
+GET _cat/aliases/conductor_stage_workflow?s=index
+

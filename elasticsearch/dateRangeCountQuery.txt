@@ -1,0 +1,11 @@
+GET conductor_testa_task*/_count
+{
+  "query": {
+    "range":{
+      "startTime":{
+        "gte": "2019-09-11",
+        "lte": "2019-09-11"
+      }
+    }
+  }
+}

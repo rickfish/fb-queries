@@ -1,0 +1,41 @@
+PUT /conductor_prod_workflow_gen_2021_01_thru_03
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "index" : "conductor_prod_workflow_gen_2021_01_thru_03", "alias" : "conductor_prod_workflow" } }
+  ]
+}
+PUT /conductor_prod_workflow_gen_2021_01_thru_03/_settings
+{
+  "index" : {
+    "number_of_replicas" : 0,
+    "refresh_interval" : -1
+  }
+}
+# reindex the data
+POST _reindex?wait_for_completion=false&slices=auto
+{
+  "source": {
+    "index": "conductor_prod_workflow_gen_2021.01,conductor_prod_workflow_gen_2021.02,conductor_prod_workflow_gen_2021.03"
+  },
+  "dest": {
+    "index": "conductor_prod_workflow_gen_2021_01_thru_03"
+  }
+}
+GET tasks/
+
+PUT /conductor_prod_workflow_gen_2021_01_thru_03/_settings
+{
+  "index" : {
+    "number_of_replicas" : 1,
+    "refresh_interval" : "1s"
+  }
+}
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "indices" : ["conductor_prod_workflow_gen_2021.01","conductor_prod_workflow_gen_2021.02","conductor_prod_workflow_gen_2021.03"], "alias" : "conductor_prod_workflow" } },
+    { "add" : { "index" : "conductor_prod_workflow_gen_2021_01_thru_03", "alias" : "conductor_prod_workflow" } }
+  ]
+}
+DELETE /conductor_prod_workflow_gen_2021.01,conductor_prod_workflow_gen_2021.02,conductor_prod_workflow_gen_2021.03

@@ -1,0 +1,12 @@
+GET conductor_prod_workflow*/_search
+{
+    "query": {
+        "bool": {
+            "must_not": {
+                "exists": {
+                    "field": "updateTime"
+                }
+            }
+        }
+    }
+}

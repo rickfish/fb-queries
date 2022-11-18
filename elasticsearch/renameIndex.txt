@@ -1,0 +1,8 @@
+PUT /conductor_unita_tasklog_202004/_settings
+{
+  "settings": {
+    "index.blocks.write": true
+  }
+}
+POST /conductor_unita_tasklog_202004/_clone/conductor_unita_tasklog_2020.04
+DELETE /conductor_unita_tasklog_202004

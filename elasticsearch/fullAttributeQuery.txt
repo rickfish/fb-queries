@@ -1,0 +1,36 @@
+{
+    "query": {
+      "bool": {
+        "should": [{
+          "prefix": {"uniqueId": "4-4389"}
+        },{
+          "match": {"status": "4-4389"}
+        },{
+          "nested": {
+            "path": "tasks",
+            "query": {
+              "bool": {
+                "should": [{
+                  "match": {"tasks.assignee.userId": "4-4389"},
+                  "match": {"tasks.created.dt": "4-4389"},
+                  "match": {"tasks.status": {"query": "4-4389", "_name": "ucallit"}},
+                  "match": {"tasks.uniqueTaskId": "4-4389"}
+                }]
+              }
+            }
+          }
+        },{
+          "nested": {
+            "path": "assoc",
+            "query": {
+              "bool": {
+                "should": [{
+                  "prefix": {"assoc.id": "4-4389"}
+                }]
+              }
+            }
+          }
+        }]
+      }
+    }
+}

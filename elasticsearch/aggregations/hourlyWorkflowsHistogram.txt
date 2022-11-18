@@ -1,0 +1,12 @@
+GET conductor_prod_workflow_*/_search?size=0&q=startTime:[2019-11-07T00:00:00 TO *]
+{
+	"aggs": {
+	  "hourly_results": {
+		  "date_histogram": {
+		    "field":"startTime",
+		    "calendar_interval":"hour",
+		    "min_doc_count": 1
+		  }
+	  }
+	}
+}

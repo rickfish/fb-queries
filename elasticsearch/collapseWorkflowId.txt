@@ -1,0 +1,22 @@
+GET conductor_stage_workflow/_search?filter_path=hits.total,hits.hits._source.workflowId
+{
+    "size":20,
+    "from":0,
+     "sort": [
+      {
+        "startTime": {
+          "order": "desc"
+        }
+      }
+    ],
+    "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "_id"
+           }
+        }
+     }
+} 

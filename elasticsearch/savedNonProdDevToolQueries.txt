@@ -1,0 +1,772 @@
+GET _aliases
+GET /_cat/aliases
+GET /_cat/aliases/TASKS
+GET /_cat/aliases/conductor_unita_task
+GET /_cat/aliases/conductor_unita_workflow
+
+GET /_security/role
+
+GET /_cat/aliases/conductor_stage_task
+GET /_cat/aliases/conductor_stage_workflow
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_stage_task_*_*", "alias" : "conductor_stage_task" } }
+      ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_stage_workflow_*_*", "alias" : "conductor_stage_workflow" } }
+      ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_stage_workflow_*", "alias" : "conductor_stage_workflow" } },
+        { "remove" : { "index" : "conductor_stage_task_*", "alias" : "conductor_stage_task" } },
+        { "add" : { "index" : "conductor_stage_workflow_*_*", "alias" : "conductor_stage_workflow" } },
+        { "add" : { "index" : "conductor_stage_task_*_*", "alias" : "conductor_stage_task" } }
+    ]
+}
+
+GET conductor_stage_task/_search?q=taskId:051bcf58-5505-4cec-a49b-a7f8924e1b5f
+
+GET conductor_unita_workflow/_search?q=workflowId:36550ca7-b57c-4594-991a-efc39b171d08 
+
+GET conductor_stage_task_invalid_secrole/_search?sort=updateTime:desc
+
+GET conductor_stage_workflow/_count
+GET conductor_stage_task/_count
+
+GET conductor_stage_workflow/_count?q=@timestamp:[2018-01-31 TO 2020-02-01] AND status:RUNNING
+
+GET conductor_stage_workflow/_count?q=@timestamp:[2018-01-31 TO 2020-03-01] AND status:RUNNING
+
+GET conductor_stage_workflow/_count?q=@timestamp:[2018-01-31 TO 2020-04-01] AND status:RUNNING
+
+GET conductor_testa_task/_search?filter_path=hits.hits._index,hits.hits.index,hits.hits._source.workflowType,hits.hits._source.@timestamp&q=@timestamp:[2018-01-31 TO *] AND status:IN_PROGRESS
+{
+  "size":200
+}
+
+GET conductor_stage_workflow/_search?sort=updateTime:desc
+
+GET conductor_stage_task/_search?q=workflowInstanceId:be8bea3f-d09f-4c06-a19b-3aef15b0c0e1
+
+GET conductor_unita_workflow/_search?q=status:COMPLETED
+
+GET conductor_unita_workflow/_search?q=workflowId:d46ce31f-1f1a-4d8f-92e8-681ec977de99
+
+GET conductor_unita_task/_search?q=taskId:3f94a396-6d26-421b-89b4-3a881d2af416
+
+GET conductor_unita_task/_search
+
+GET conductor_stage_task/_search
+{
+   "size": 0,
+   "aggs": {
+      "dupids": {
+         "terms": {
+            "field": "taskId",
+            "size":1000,
+            "min_doc_count":2
+         }
+      }
+   }
+}
+GET conductor_testa_workflow/_search?sort=@timestamp:desc
+
+GET conductor_testa_workflow/_search
+{
+   "size": 0,
+   "aggs": {
+      "dupids": {
+         "terms": {
+            "field": "workflowId",
+            "size":1000,
+            "min_doc_count":2
+         }
+      }
+   }
+}
+
+GET /conductor_testa_task/_search?q=taskId:8e7a81e6-1c6f-48f2-b5a4-c25786ed5698
+
+GET /conductor_testa_workflow/_search?q=workflowId:1dacb230-9d15-4a03-82b0-b8f33add639f
+
+GET /_template/template_workflow_stage
+
+GET /conductor_unita_workflow_gen_active/_search?q=workflowType:Orfatt_IN_COMPLETE_WF
+
+GET /conductor_*/_search?q=workflowId:5f338ece-b6ed-4303-9d7d-ca17ea822298
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_testa_workflow_*", "alias" : "conductor_testa_workflow" } },
+        { "remove" : { "index" : "conductor_testa_task_*", "alias" : "conductor_testa_task" } },
+        { "add" : { "index" : "conductor_testa_workflow_*_*", "alias" : "conductor_testa_workflow" } },
+        { "add" : { "index" : "conductor_testa_task_*_*", "alias" : "conductor_testa_task" } },
+        { "remove" : { "index" : "conductor_testa_task_log_*", "alias" : "conductor_testa_task" } }
+    ]
+}
+
+PUT _template/template_tasklog
+{
+  "order": 0,
+  "index_patterns": [
+    "conductor_tasklog*"
+  ],
+  "settings": {
+    "index": {
+      "refresh_interval": "1s",
+      "unassigned": {
+        "node_left": {
+          "delayed_timeout": "5m"
+        }
+      },
+      "number_of_shards": "5",
+      "number_of_replicas": "1"
+    }
+  },
+  "mappings": {
+    "properties": {
+      "log": {
+        "index": true,
+        "type": "keyword"
+      },
+      "createdTime": {
+        "type": "long"
+      },
+      "taskId": {
+        "index": true,
+        "type": "keyword"
+      }
+    }
+  },
+  "aliases": {
+    "TASKLOGS": {}
+  }
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_testa_workflow_*_*", "alias" : "conductor_testa_workflow" } }
+      ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_testa_workflow_*_*", "alias" : "conductor_testa_workflow" } },
+        { "remove" : { "index" : "conductor_testa_task_*_*", "alias" : "conductor_testa_task" } }
+      ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_testa_workflow_*", "alias" : "conductor_testa_workflow" } },
+        { "add" : { "index" : "conductor_testa_workflow_*", "alias" : "conductor_testa_workflow" } },
+        { "remove" : { "index" : "conductor_testa_workflow_*_*", "alias" : "conductor_testa_workflow" } }
+      ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "test_workflow_test", "alias" : "conductor_unita_workflow" } }
+    ]
+}
+
+POST _aliases
+{
+  "actions": [
+    {
+      "remove": {
+        "index": "test_rick",
+        "alias": "conductor_unita_workflow"
+      }
+    }
+  ]
+}
+
+GET etd_*-2020.04/_search
+
+GET conductor_unita_task/_search
+
+GET conductor_unita_task/_search
+{
+  "size":0,
+  "collapse" : {
+        "field" : "taskId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "taskId"
+           }
+        }
+     }
+} 
+
+GET conductor_unita_workflow/_search
+
+GET conductor_unita_workflow/_search
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+
+GET conductor_unita_task/_search?q=tags.secRole:GEN
+
+GET conductor_unita_task_invalid_secrole/_search 
+{
+  "size":1000
+}
+
+GET conductor_unita_task_invalid_secrole*/_search?filter_path=hits.hits._source.tags.secRole
+{
+  "size":600
+} 
+
+GET conductor_stage_workflow_*/_search?q=tags.secRole:GEN
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+
+GET conductor_unita_workflow/_search?q=workflowId:a7b9637e-1f46-4c33-a9d3-2bb7f6dced13
+GET conductor_unita_workflow/_search?q=@timestamp:[2020-03-11 TO 2020-03-13]
+
+POST conductor_unita_workflow_202003/_delete_by_query
+{
+    "query": {
+        "term": {
+            "workflowId": {
+                "value": "1a02a414-06c7-4ca1-a95f-a668df1db8f8"
+            }
+        }
+    }
+}
+
+
+GET conductor_unita_task/_search?q=taskId:05442b5d-fa19-4fb2-91f2-b33063bdf579
+GET conductor_stage_task/_search?q=taskDefName:claim_review_process AND correlationId:67615_E9OB_11
+
+GET conductor_testa_task/_search?q=taskType:EIT_EEB_BUS_EXCEPTION_GENERATE_TASK
+
+GET conductor_testa_task/_search?q=taskType:EIT_EEB_BUS_EXCEPTION_GENERATE_TASK AND status:COMPLETED
+{
+  "size":0,
+  "collapse" : {
+        "field" : "taskId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "taskId"
+           }
+        }
+     }
+} 
+
+
+GET conductor_unita_workflow/_search?filter_path=hits.hits._source.workflowId&q=status:PAUSED
+{
+  "size":20,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+
+GET conductor_unita_workflow/_search?q=secRole IN ('GEN')
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+
+GET conductor_unita_workflow/_search?q=secRole IN ('GEN') AND (status:RUNNING OR status:COMPLETED OR status:TERMINATED OR status:PAUSED OR status:TIMED_OUT OR status:FAILED)
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+
+GET conductor_unita_workflow/_search?q=secRole IN ('GEN') AND status:RUNNING
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+GET conductor_unita_workflow/_search?q=secRole IN ('GEN') AND status:COMPLETED
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+GET conductor_unita_workflow/_search?q=secRole IN ('GEN') AND status:TERMINATED
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+GET conductor_unita_workflow/_search?q=secRole IN ('GEN') AND status:PAUSED
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+GET conductor_unita_workflow/_search?q=secRole IN ('GEN') AND status:TIMED_OUT
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+GET conductor_unita_workflow/_search?q=secRole IN ('GEN') AND status:FAILED
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+GET conductor_testa_task/_search?q=secRole IN ('GEN', 'FEP') AND status:COMPLETED
+
+GET conductor_testa_task/_search
+{
+  "size":0,
+	"aggs" : {
+		"uniq_task_status" : {
+			"terms" : { "field" : "status", "size":1000 }
+		}
+	}
+}
+
+GET conductor_unita_workflow/_count
+
+GET conductor_unita_workflow/_count?q=tags.secRole IN ('GEN')
+
+GET conductor_unita_workflow/_search?q=tags.secRole IN ('GEN')
+{
+  "size":0,
+	"aggs" : {
+		"uniq_workflow_status" : {
+			"terms" : { "field" : "status", "size":1000 }
+		}
+	}
+}
+
+GET conductor_testa_workflow/_search
+{
+  "size":0,
+	"aggs" : {
+		"uniq_workflow_secRole" : {
+			"terms" : { "field" : "tags.secRole", "size":1000 }
+		}
+	}
+}
+
+GET conductor_testa_workflow/_count?q=tags.secRole:GEN
+GET conductor_testa_workflow/_count?q=tags.secRole:FEP
+GET conductor_testa_workflow/_count?q=tags.secRole:SAO
+GET conductor_testa_workflow/_count?q=tags.secRole:EMP
+GET conductor_testa_workflow/_count?q=tags.secRole:BLU
+GET conductor_testa_workflow/_count?q=tags.secRole:BCH
+GET conductor_testa_workflow/_count?q=tags.secRole:SEN
+
+GET conductor_testa_workflow/_search?q=tags.secRole:SEN
+
+GET conductor_testa_workflow/_search?filter_path=hits.hits._source.tags.secRole&q=_exists_:tags.secRole AND NOT(tags.secRole:null) AND NOT(tags.secRole:NotImplemented) AND NOT(tags.secRole:GEN) AND NOT(tags.secRole:SEN) AND NOT(tags.secRole:BCH) AND NOT(tags.secRole:BLU) AND NOT(tags.secRole:EMP) AND NOT(tags.secRole:SAO) AND NOT(tags.secRole:FEP)
+{
+  "size":1000
+}
+
+GET conductor_stage_workflow/_search?q=_exists_:tags.secRole AND NOT(tags.secRole:null) AND NOT(tags.secRole:GEN) AND NOT(tags.secRole:SEN) AND NOT(tags.secRole:BCH) AND NOT(tags.secRole:BLU) AND NOT(tags.secRole:EMP) AND NOT(tags.secRole:SAO) AND NOT(tags.secRole:FEP)
+{
+  "size":1000
+}
+GET conductor_stage_workflow/_count?q=tags.secRole:GEN
+GET conductor_stage_workflow/_count?q=tags.secRole:GEN AND status:RUNNING
+
+GET conductor_stage_workflow/_count?q=tags.secRole:FEP
+GET conductor_stage_workflow/_count?q=tags.secRole:SAO
+GET conductor_stage_workflow/_count?q=tags.secRole:EMP
+GET conductor_stage_workflow/_count?q=tags.secRole:BLU
+GET conductor_stage_workflow/_count?q=tags.secRole:BCH
+GET conductor_stage_workflow/_count?q=tags.secRole:SEN
+
+
+GET conductor_testa_workflow/_search?q=status IN (TERMINATED,FAILED)
+
+GET conductor_testa_workflow/_search
+{
+  "query": {
+    "bool": {
+      "must_not": {
+        "terms": {
+          "tags.secRole": [
+            "GEN",
+            "FEP",
+            "SAO",
+            "EMP",
+            "BLU",
+            "BCH",
+            "SEN"
+          ]
+        }
+      }
+    }
+  }
+}
+
+GET conductor_testa_workflow/_search
+{
+  "query": {
+    "bool": {
+      "must_not": {
+        "terms": {
+          "status": [
+            "RUNNING",
+            "COMPLETED",
+            "FAILED",
+            "TIMED_OUT"
+          ]
+        }
+      }
+    }
+  }
+}
+
+GET conductor_testa_workflow/_search
+{
+  "size": 0,
+  "aggs": {
+      "dedup": {
+         "cardinality": {
+            "field": "status"
+         }
+      }
+   }
+}
+
+GET conductor_testa_workflow/_search?q=tags.secRole:GEN&filter_path=hits.hits._source.tags.secRole
+
+GET conductor_testa_task_202001/_search?sort=@timestamp:desc&version=true&q=status:SCHEDULED AND @timestamp:[2020-02-23 TO *]
+
+GET conductor_testa_task_202002/_search?sort=@timestamp:desc&version=true&q=status:IN_PROGRESS AND @timestamp:[2020-02-25 TO *]
+
+GET conductor_stage_task_202001/_search?sort=@timestamp:desc&version=true&q=status:CANCELED AND reconciled:true AND @timestamp:[2020-01-26 TO *]
+
+GET conductor_testa_task_202001/_search?sort=@timestamp:desc&version=true&q=status:CANCELED AND @timestamp:[2020-01-26 TO *]
+GET conductor_stage_task_202001/_search?sort=@timestamp:desc&version=true&q=status:CANCELED AND @timestamp:[2020-01-26 TO *]
+
+GET conductor_testa_task/_search?q=status:IN_PROGRESS AND @timestamp:[2020-02-02 TO 2020-02-23]
+GET conductor_testa_task/_search?q=reconciled:true AND tags.secRole:GEN
+
+GET conductor_stage_workflow/_search?q=status:TERMINATED
+{
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "_id"
+           }
+        }
+     }
+} 
+
+GET conductor_unita_workflow/_search?q=status:RUNNING
+{
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "_id"
+           }
+        }
+     }
+} 
+
+GET conductor_stage_task/_search
+
+GET conductor_unita_workflow/_search?q=workflowType:SIO_ETD_WAIT_WF
+
+GET conductor_unita_workflow/_search?q=workflowId:59c0dc43-904a-416c-b920-5796ff9db783
+GET conductor_unita_task/_search?q=taskId:bd8aa189-60b9-4959-beb2-27e9f0cf7a83
+
+GET conductor_testa_workflow/_search?q=workflowType:claims_workflow_ib_request_wf AND updateTime:[2019-11-13 TO *]
+
+GET conductor_testa_workflow/_search?q=workflowId:dc99aa4c-2e59-45b6-8ec9-1eb0140f4fa0&version=true
+
+
+GET conductor_testa_workflow/_search
+{
+  "query": {
+    "bool": {
+      "must":[
+        {
+          "term": {
+            "workflowType": "claims_workflow_ib_request_wf"
+          }
+        },
+        {
+          "range": {
+            "updateTime": {
+              "lte": "2019-11-01"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+POST conductor_stage_workflow/_delete_by_query
+{
+    "query": {
+        "wildcard": {
+            "workflowId": {
+                "value": "df99b19e-530d-4edb-ba46-5b5daea4*"
+            }
+        }
+    }
+}
+
+GET conductor_unita_task/_search?q=taskId:c20569d3-7192-4e0d-af11-e21ecab265d6
+
+POST conductor_stage_task/_delete_by_query
+{
+    "query": {
+        "wildcard": {
+            "taskId": {
+                "value": "0e89d0ba-8a4e-416f-903b-99263b25*"
+            }
+        }
+    }
+}
+
+GET conductor_stage_task/_search?q=taskType:SIO_ETD_BASICJAVA_TASK
+
+GET conductor_stage_workflow/_search
+{
+    "query": {
+        "exists": {
+            "field": "tags.sequenceClaimId"
+        }
+    }
+}
+
+GET conductor_prod_task*/_search?q=updateTime:[2019-11-06T16:00:00 TO 2019-11-06T16:59:59]
+
+GET conductor_prod_workflow*/_search
+{
+  "size":0,
+	"aggs" : {
+		"uniq_workflow" : {
+			"terms" : { "field" : "workflowType", "size":1000 }
+		}
+	}
+}
+
+GET conductor_prod_task*/_search
+{
+  "size":0,
+	"aggs" : {
+		"uniq_task" : {
+			"terms" : { "field" : "taskType", "size":1000 }
+		}
+	}
+}
+
+GET conductor_prod_task*/_search
+{
+  "size":0,
+	"aggs" : {
+		"uniq_task" : {
+			"terms" : { "field" : "taskType", "size":1000 },
+			"aggs": {
+			  "daily_results": {
+  			  "date_histogram": {
+  			    "field":"startTime",
+  			    "calendar_interval":"day",
+  			    "min_doc_count": 1
+  			  }
+			  }
+			}
+		}
+	}
+}
+
+GET conductor_prod_task_*/_search?size=0&q=updateTime:[2019-11-08T20:00:00 TO *]
+{
+	"aggs": {
+	  "hourly_results": {
+		  "date_histogram": {
+		    "field":"updateTime",
+		    "calendar_interval":"hour",
+		    "min_doc_count": 1
+		  }
+	  }
+	}
+}
+
+GET conductor_testa_workflow/_search?size=0&q=updateTime:[2019-11-08T20:00:00 TO *]
+{
+	"aggs": {
+	  "hourly_results": {
+		  "date_histogram": {
+		    "field":"updateTime",
+		    "calendar_interval":"hour",
+		    "min_doc_count": 1
+		  }
+	  }
+	}
+}
+
+GET conductor_prod_task_*/_search?size=0&q=startTime:[2019-11-08T20:00:00 TO *]
+{
+	"aggs": {
+	  "hourly_results": {
+		  "date_histogram": {
+		    "field":"startTime",
+		    "calendar_interval":"hour",
+		    "min_doc_count": 1
+		  }
+	  }
+	}
+}
+
+GET conductor_prod_workflow_*/_search?size=0&q=startTime:[2019-11-08T20:00:00 TO *]
+{
+	"aggs": {
+	  "hourly_results": {
+		  "date_histogram": {
+		    "field":"startTime",
+		    "calendar_interval":"hour",
+		    "min_doc_count": 1
+		  }
+	  }
+	}
+}
+
+GET conductor_prod_workflow*/_search?size=10000&q=startTime:[2019-10-26T23:00:00 TO *]&filter_path=hits.hits._source.updateTime
+
+GET conductor_prod_workflow*/_search
+{
+    "query": {
+        "bool": {
+            "must_not": {
+                "exists": {
+                    "field": "updateTime"
+                }
+            }
+        }
+    }
+}
+GET conductor_prod_workflow*/_search
+GET conductor_prod_task*/_search
+
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}

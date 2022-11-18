@@ -1,0 +1,17 @@
+SELECT DISTINCT queue_name, COUNT(*) FROM queue_message GROUP BY queue_name;
+SELECT distinct wd.workflow_def, COUNT(*) FROM queue_message qm inner join workflow_def_to_workflow wd on qm.message_id = wd.workflow_id and queue_name = '_deciderQueue' GROUP BY wd.workflow_def;
+explain analyze SELECT created_on, deliver_on, queue_name, message_id, priority, payload FROM queue_message WHERE queue_name = '_deciderQueue' AND popped = FALSE AND deliver_on <= (CURRENT_TIMESTAMP + (1000 || ' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT '40';
+SELECT created_on, deliver_on, queue_name, message_id, priority, payload FROM queue_message WHERE queue_name = '_deciderQueue' AND popped = FALSE AND deliver_on <= (CURRENT_TIMESTAMP + (1000 || ' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT '40';
+
+SELECT * from workflow WHERE workflow_id = '00b2b3eb-9067-46ce-8c14-b756ed140b32';
+
+SELECT COUNT(*) FROM queue_message qm INNER JOIN workflow_def_to_workflow wd ON qm.message_id = wd.workflow_id WHERE qm.queue_name = '_deciderQueue'
+	AND wd.workflow_def IN ('SSO_RPM_CARE_GAP_WF','SSO_RPM_CODING_GAP_WF','SSO_RPM_MEDICAL_RECORD_REQUEST_WF')
+	AND wd.modified_on < '2021-02-18';
+
+select pid,backend_start,query_start,state_change,wait_event,STATE,wait_event_type,query from pg_stat_activity where application_name = 'HeidiSQL';
+SELECT * from pg_stat_activity where application_name = 'HeidiSQL';
+SELECT STATE, application_name, query_start, * from pg_stat_activity ORDER BY STATE, application_name, query_start;
+SELECT distinct application_name, COUNT(*) from pg_stat_activity group by application_name ORDER BY application_name;
+SELECT STATE, count(*) from pg_stat_activity group by state;
+

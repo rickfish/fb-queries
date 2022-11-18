@@ -1,0 +1,33 @@
+{
+   "query": {
+      "bool": {
+         "must": 
+            {
+               "nested": {
+                  "path": "tasks",
+                  "query": {
+					 "bool": {
+						"must": [
+						{
+							 "range": {
+								"tasks.created.dt": 
+								   {
+									  "gte": "2018-09-01",
+									  "lte": "2018-09-01"
+								   }
+							 }
+						},
+						{
+							 "match": {
+								"tasks.assignee.userId": "AA5T"
+							 }
+						}
+						]
+					 }
+                  }
+               }
+            }
+         
+      }
+   }
+}

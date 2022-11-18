@@ -1,0 +1,206 @@
+GET _cat/indices/conductor_stage_task_gen*?v&s=store.size
+
+
+GET _cat/indices/conductor_stage_task_*?v&s=pri.store.size
+
+GET _cat/aliases/conductor_testa_task?s=index
+
+#stage_workflow_gen_2020 
+GET _tasks/c7FyjliTT72yvZi3HT-eyA:3578974
+#stage_task_gen_01_thru_05 
+GET _tasks/c7FyjliTT72yvZi3HT-eyA:3627142
+#stage_task_gen_06_thru_07 
+GET _tasks/c7FyjliTT72yvZi3HT-eyA:3633266
+#stage_task_gen_08_thru_12 
+GET _tasks/c7FyjliTT72yvZi3HT-eyA:3649867
+
+PUT /conductor_stage_workflow_gen_2020
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "index" : "conductor_stage_workflow_gen_2020", "alias" : "conductor_stage_workflow" } }
+  ]
+}
+
+PUT /conductor_stage_workflow_gen_2020/_settings
+{
+  "index" : {
+    "number_of_replicas" : 0,
+    "refresh_interval" : -1
+  }
+}
+POST _reindex?wait_for_completion=false&slices=auto
+{
+  "source": {
+    "index": "conductor_stage_workflow_gen_2020.01,conductor_stage_workflow_gen_2020.02,conductor_stage_workflow_gen_2020.03,conductor_stage_workflow_gen_2020.04,conductor_stage_workflow_gen_2020.05,conductor_stage_workflow_gen_2020.06,conductor_stage_workflow_gen_2020.07,conductor_stage_workflow_gen_2020.08,conductor_stage_workflow_gen_2020.09,conductor_stage_workflow_gen_2020.10,conductor_stage_workflow_gen_2020.11,conductor_stage_workflow_gen_2020.12"
+  },
+  "dest": {
+    "index": "conductor_stage_workflow_gen_2020"
+  }
+}
+
+GET _tasks/c7FyjliTT72yvZi3HT-eyA:3578974
+
+PUT /conductor_stage_workflow_gen_2020/_settings
+{
+  "index" : {
+    "number_of_replicas" : 1,
+    "refresh_interval" : "1s"
+  }
+}
+
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "indices" : ["conductor_stage_workflow_gen_2020.*"], "alias" : "conductor_stage_workflow" } },
+    { "add" : { "index" : "conductor_stage_workflow_gen_2020", "alias" : "conductor_stage_workflow" } }
+  ]
+}
+
+DELETE /conductor_stage_workflow_gen_2020.*
+
+
+###############################
+# 01 thru 05
+PUT /conductor_stage_task_gen_2020_01_thru_05
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "index" : "conductor_stage_task_gen_2020_01_thru_05", "alias" : "conductor_stage_task" } }
+  ]
+}
+
+PUT /conductor_stage_task_gen_2020_01_thru_05/_settings
+{
+  "index" : {
+    "number_of_replicas" : 0,
+    "refresh_interval" : -1
+  }
+}
+
+POST _reindex?wait_for_completion=false&slices=auto
+{
+  "source": {
+    "index": "conductor_stage_task_gen_2020.01,conductor_stage_task_gen_2020.02,conductor_stage_task_gen_2020.03,conductor_stage_task_gen_2020.04,conductor_stage_task_gen_2020.05"
+  },
+  "dest": {
+    "index": "conductor_stage_task_gen_2020_01_thru_05"
+  }
+}
+
+GET _tasks/c7FyjliTT72yvZi3HT-eyA:3627142
+
+PUT /conductor_stage_task_gen_2020_01_thru_05/_settings
+{
+  "index" : {
+    "number_of_replicas" : 1,
+    "refresh_interval" : "1s"
+  }
+}
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "indices" : ["conductor_stage_task_gen_2020.01","conductor_stage_task_gen_2020.02","conductor_stage_task_gen_2020.03","conductor_stage_task_gen_2020.04","conductor_stage_task_gen_2020.05"], "alias" : "conductor_stage_task" } },
+    { "add" : { "index" : "conductor_stage_task_gen_2020_01_thru_05", "alias" : "conductor_stage_task" } }
+  ]
+}
+
+DELETE /conductor_stage_task_gen_2020.01,conductor_stage_task_gen_2020.02,conductor_stage_task_gen_2020.03,conductor_stage_task_gen_2020.04,conductor_stage_task_gen_2020.05
+
+###############################
+# 06 thru 07
+PUT /conductor_stage_task_gen_2020_06_thru_07
+
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "index" : "conductor_stage_task_gen_2020_06_thru_07", "alias" : "conductor_stage_task" } }
+  ]
+}
+
+PUT /conductor_stage_task_gen_2020_06_thru_07/_settings
+{
+  "index" : {
+    "number_of_replicas" : 0,
+    "refresh_interval" : -1
+  }
+}
+
+POST _reindex?wait_for_completion=false&slices=auto
+{
+  "source": {
+    "index": "conductor_stage_task_gen_2020.06,conductor_stage_task_gen_2020.07"
+  },
+  "dest": {
+    "index": "conductor_stage_task_gen_2020_06_thru_07"
+  }
+}
+
+GET _tasks/c7FyjliTT72yvZi3HT-eyA:3296575
+
+PUT /conductor_stage_task_gen_2020_06_thru_07/_settings
+{
+  "index" : {
+    "number_of_replicas" : 1,
+    "refresh_interval" : "1s"
+  }
+}
+
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "indices" : ["conductor_stage_task_gen_2020.06","conductor_stage_task_gen_2020.07"], "alias" : "conductor_stage_task" } },
+    { "add" : { "index" : "conductor_stage_task_gen_2020_06_thru_07", "alias" : "conductor_stage_task" } }
+  ]
+}
+
+DELETE /conductor_stage_task_gen_2020.06,conductor_stage_task_gen_2020.07
+
+
+
+###############################
+# 08 thru 12
+PUT /conductor_stage_task_gen_2020_08_thru_12
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "index" : "conductor_stage_task_gen_2020_08_thru_12", "alias" : "conductor_stage_task" } }
+  ]
+}
+
+PUT /conductor_stage_task_gen_2020_08_thru_12/_settings
+{
+  "index" : {
+    "number_of_replicas" : 0,
+    "refresh_interval" : -1
+  }
+}
+
+POST _reindex?wait_for_completion=false&slices=auto
+{
+  "source": {
+    "index": "conductor_stage_task_gen_2020.08,conductor_stage_task_gen_2020.09,conductor_stage_task_gen_2020.10,conductor_stage_task_gen_2020.11,conductor_stage_task_gen_2020.12"
+  },
+  "dest": {
+    "index": "conductor_stage_task_gen_2020_08_thru_12"
+  }
+}
+
+GET _tasks/c7FyjliTT72yvZi3HT-eyA:3296575
+
+PUT /conductor_stage_task_gen_2020_08_thru_12/_settings
+{
+  "index" : {
+    "number_of_replicas" : 1,
+    "refresh_interval" : "1s"
+  }
+}
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "indices" : ["conductor_stage_task_gen_2020.08","conductor_stage_task_gen_2020.09","conductor_stage_task_gen_2020.10","conductor_stage_task_gen_2020.11","conductor_stage_task_gen_2020.12"], "alias" : "conductor_stage_task" } },
+    { "add" : { "index" : "conductor_stage_task_gen_2020_08_thru_12", "alias" : "conductor_stage_task" } }
+  ]
+}
+
+DELETE /conductor_stage_task_gen_2020.08,conductor_stage_task_gen_2020.09,conductor_stage_task_gen_2020.10,conductor_stage_task_gen_2020.11,conductor_stage_task_gen_2020.12

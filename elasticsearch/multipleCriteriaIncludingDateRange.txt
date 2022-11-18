@@ -1,0 +1,21 @@
+GET conductor_testa_workflow/_search
+{
+  "query": {
+    "bool": {
+      "must":[
+        {
+          "term": {
+            "workflowType": "claims_workflow_ib_request_wf"
+          }
+        },
+        {
+          "range": {
+            "updateTime": {
+              "lte": "2019-11-01"
+            }
+          }
+        }
+      ]
+    }
+  }
+}

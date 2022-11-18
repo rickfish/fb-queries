@@ -1,0 +1,10 @@
+POST conductor_stage_task/_delete_by_query
+{
+    "query": {
+        "wildcard": {
+            "taskId": {
+                "value": "0e89d0ba-8a4e-416f-903b-99263b25*"
+            }
+        }
+    }
+}

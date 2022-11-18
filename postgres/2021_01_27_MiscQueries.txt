@@ -1,0 +1,202 @@
+SELECT COUNT(*) FROM workflow w, workflow_def_to_workflow wd WHERE w.workflow_id = wd.workflow_id AND wd.workflow_def = 'SSO_RPM_CARE_GAP_CHECK_MR_INTERNAL_LOOP_WF' AND w.correlation_id = '317';
+SELECT * from workflow WHERE workflow_id = '00b2b3eb-9067-46ce-8c14-b756ed140b32';
+
+SELECT COUNT(*) FROM workflow;
+
+SELECT * from task_scheduled ts
+	INNER JOIN workflow_to_task wtt ON wtt.task_id = ts.task_id
+	INNER JOIN workflow_def_to_workflow wdw ON wdw.workflow_id = wtt.workflow_id
+	WHERE wdw.workflow_def = 'TES_MASTER_WORKFLOW';
+	
+SELECT * FROM workflow w, workflow_def_to_workflow wd WHERE w.workflow_id = wd.workflow_id AND correlation_id = '44663' AND wd.workflow_def = 'SSO_RPM_WAIT_EXTERNAL_ACTION_WF';
+
+SELECT COUNT(*) FROM queue_message qm INNER JOIN workflow_def_to_workflow wd ON qm.message_id = wd.workflow_id WHERE qm.queue_name = '_deciderQueue'
+	AND wd.workflow_def IN ('SSO_RPM_CARE_GAP_WF','SSO_RPM_CODING_GAP_WF','SSO_RPM_MEDICAL_RECORD_REQUEST_WF')
+	AND wd.modified_on < '2021-02-18';
+
+SELECT distinct(workflow_def), count(*) FROM queue_message qm inner join workflow_def_to_workflow ON qm.message_id = wd.workflow_id WHERE queue_name = '_deciderQueue' GROUP BY wd.workflow_def;
+
+SELECT distinct(wd.workflow_def) FROM workflow w inner join workflow_def_to_workflow ON w.workflow_id = wd.workflow_id GROUP BY wd.workflow_def;
+
+SELECT * FROM task WHERE task_id = '941095f9-a73c-4fff-8325-917600e2ea10';
+
+SELECT * FROM workflow ORDER BY modified_on LIMIT 1000;
+
+SELECT * FROM queue_message WHERE queue_name = 'SSI_GRS_GET_GROUP_BATCH_TASK';
+
+SELECT COUNT(*) FROM task WHERE modified_on between '2020-08-24' AND '2020-08-25';
+SELECT COUNT(*) FROM workflow WHERE modified_on between '2020-08-17' AND '2020-08-18';
+SELECT * FROM task WHERE modified_on > '2020-08-27T09:00:30';
+
+SELECT COUNT(*) FROM queue_message WHERE queue_name = '_deciderQueue';
+SELECT * FROM queue_message WHERE queue_name = '_deciderQueue' AND deliver_on BETWEEN '< '2020-09-01';
+select * from queue_message where priority = 0;
+
+select * from workflow w, workflow_def_to_workflow wd where w.workflow_id = wd.workflow_id and w.modified_on > '2020-09-09' and wd.workflow_def = 'CNSR_SCL_SURVEY_CASE_WF';
+
+R
+select count(queue_name) from queue_message where queue_name = 'TES_GET_SUBWF_TASK';
+select count(queue_name) from queue_message where queue_name = 'TES_DONE_TASK';
+select * from queue_message where queue_name = 'TES_GET_SUBWF_TASK' order by deliver_on limit 1000;
+select * from queue_message where queue_name = 'SUB_WORKFLOW' order by deliver_on limit 1000;
+select * from queue_message where queue_name = 'Orfatt_Task_Testing' and deliver_on <= CURRENT_TIMESTAMP;
+select * from queue_message where message_id = 'd7e68527-c0a8-48f2-b2d3-ec02e276538f';
+select * from task where task_id = '44333b09-1740-44e9-b732-666b23d9cd96';
+select * from workflow where workflow_id = '6cebcab5-373b-45a9-97d7-59acae950d55';
+select * from queue_message where queue_name = 'WAIT' order by deliver_on limit 1000;
+select count(*) from queue_message where queue_name = 'T_PerfTest_0901_01';
+select * from workflow where workflow_id = '4e83953a-9534-4ea8-a53e-ca15d64706b7';
+
+SELECT w.workflow_id FROM conductor_testa.workflow w, conductor_testa.workflow_def_to_workflow wd WHERE w.workflow_id = wd.workflow_id AND wd.workflow_def LIKE 'SSO_RPM_%' AND json_data LIKE '%\"status\":\"RUNNING\"%'
+
+select count(*), wd.workflow_def from workflow w, workflow_def_to_workflow wd where w.workflow_id = wd.workflow_id and correlation_id  = '59' group by wd.workflow_def;
+
+select count(*) from workflow where correlation_id = '18';
+select count(*) from workflow w, workflow_def_to_workflow wd where w.workflow_id = wd.workflow_id and correlation_id = '18' and workflow_def like 'SSO_RPM_%'; 
+
+SELECT json_data FROM poll_data WHERE queue_name = 'EMB_RCNO_DETERMINETASK_TASK';
+
+SELECT json_data from poll_data where queue_name = 'EIT_SSO_SERVICE_STATUS_TASK';
+
+SELECT queue_name, (SELECT count(*) FROM queue_message WHERE popped = false AND queue_name = q.queue_name) AS size FROM queue q
+
+select queue_name, count(*) from queue_message group by queue_name;
+
+SELECT count(*) FROM queue_message WHERE popped = false AND queue_name = 'WPM_COMMON_CLOSE_INVENTORY_TASK';
+SELECT count(*) FROM queue_message WHERE popped = false AND queue_name = 'SSO_RPM_DELAY_TASK';
+SELECT count(*) FROM queue_message WHERE popped = false AND queue_name = '_deciderQueue';
+
+SELECT json_data from poll_data where queue_name = 'EIT_SSO_SERVICE_STATUS_TASK';
+
+select * from task_scheduled where task_id = 'd7e68527-c0a8-48f2-b2d3-ec02e276538f';
+select * from task where task_id = 'd7e68527-c0a8-48f2-b2d3-ec02e276538f';
+
+select * from task where task_id = 'd7e68527-c0a8-48f2-b2d3-ec02e276538f';
+select * from queue_message where message_id = 'c88e4937-4423-49b8-89e6-ae0233bcff75';
+select count(*) from task_scheduled where modified_on < '2020-01-01' and ;
+
+select * from task_in_progress tip inner join task_scheduled ts on tip.task_id = ts.task_id;
+
+select * from task_scheduled where task_id = '797f4ce7-3281-44a3-a1c8-3e38c4ee7742';
+
+select count(*) from task where modified_on between '2020-11-12' and '2020-11-13';
+
+SELECT * FROM pg_stat_activity;
+select backend_start, query_start, application_name, query from pg_stat_activity where state like '%idle%' order by query_start;
+select count(*) from pg_stat_activity where state like '%idle%';
+
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = 'EIT_EEB_BUS_EXCEPTION_GENERATE_TASK' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT 10 FOR UPDATE SKIP LOCKED;
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT 10 FOR UPDATE SKIP LOCKED;
+SELECT count(*) FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval);
+SELECT count(*) FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = true AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval);
+SELECT * FROM queue_message order by deliver_on desc;
+SELECT * FROM queue_message WHERE queue_name = 'TES_DONE_TASK' order by deliver_on desc;
+SELECT count(*) FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = true;
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = '_deciderQueue' AND popped = FALSE AND deliver_on <= (CURRENT_TIMESTAMP + (1000 || ' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT '10' FOR UPDATE SKIP LOCKED;
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = '\_deciderQueue' AND popped = FALSE AND deliver_on <= (CURRENT_TIMESTAMP + (1000 || ' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT '10';
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = 'claims_workflow_error_task_1.0' AND popped = FALSE AND deliver_on <= (CURRENT_TIMESTAMP + (1000 || ' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT '10';
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = FALSE AND deliver_on <= (CURRENT_TIMESTAMP + (1000 || ' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT '10';
+
+select * from queue_message where queue_name = 'EIT_EEB_BUS_EXCEPTION_GENERATE_TASK' ORDER BY deliver_on;
+select * from task where task_id = 'da837f72-6377-46c2-a2a1-eccf9aad6786';
+select * from queue_message where queue_name = 'Orfatt_TEST_T1';
+select * from queue_message where message_id = '2c946d81-cc82-4b9c-afbe-6c6ad0530f98';
+select * from task where task_id = '2c946d81-cc82-4b9c-afbe-6c6ad0530f98';
+
+
+
+SELECT task_id FROM task_in_progress WHERE task_def_name = 'case_review' ORDER BY created_on LIMIT 100;
+select * from queue_message where queue_name = 'WPM_COMMON_CLOSE_INVENTORY_TASK' order by created_on LIMIT 10;
+select * from queue_message where queue_name = 'WAIT' order by created_on DESC;
+select * from queue_message where message_id = 'e5caef8a-d1f7-4a17-9592-6f53ad53256a';
+SELECT * FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT 10;
+SELECT * FROM queue_message WHERE queue_name = '_deciderQueue' and popped = false ORDER BY priority DESC, deliver_on, created_on LIMIT 100;
+
+SELECT count(*) FROM queue_message WHERE queue_name = 'WPM_COMMON_CLOSE_INVENTORY_TASK';
+
+select distinct queue_name, count(queue_name) from queue_message group by queue_name;
+
+select * from queue_message where queue_name = 'TES_DONE_TASK' AND popped = false;
+select message_id, deliver_on, popped, offset_time_seconds from queue_message where queue_name = 'EIT_EEB_BUS_EXCEPTION_GENERATE_TASK' LIMIT 1000;
+select count(*) from queue_message where queue_name = 'EIT_EEB_BUS_EXCEPTION_GENERATE_TASK' and popped = true;
+
+select * from task_scheduled limit 100;
+select * from task_scheduled where task_id = '07d03653-0ca2-4e06-9297-b7203344b76b';
+
+select * from task_scheduled where workflow_id = '63c14fbb-1944-4a30-bf74-122cf169c0da' and task_key like 'generate_closed_event_task%';
+
+select * from task_scheduled where task_id = '22f9867c-824c-4a16-b90a-6377f4755acd';
+select * from task_in_progress where task_id = '22f9867c-824c-4a16-b90a-6377f4755acd';
+select * from queue_message where message_id = '22f9867c-824c-4a16-b90a-6377f4755acd';
+
+delete from queue_message where message_id = 'ff9f6477-ab19-4fe7-9bfe-9c5eb1786db3';
+
+select * from task where task_id = '000011c5-49d5-4303-a8b4-12f5b818d8b9';
+SELECT count(*) FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval);
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT 10;
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = 'IMM_MMP_PROCESSTRIGGER_TASK' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT 10;
+
+SELECT message_id, priority, payload FROM queue_message WHERE queue_name = 'TES_DONE_TASK' AND popped = false AND deliver_on <= (current_timestamp + (1000 ||' microseconds')::interval) ORDER BY priority DESC, deliver_on, created_on LIMIT 10;
+
+delete from queue_message where queue_name = 'WAIT' and deliver_on < '2020-01-01';
+SELECT message_id FROM queue_message where queue_name = 'WPM_COMMON_CLOSE_INVENTORY_TASK' LIMIT 100;
+select distinct wdw.workflow_def, count(wdw.workflow_def) from queue_message qm
+	inner join workflow_def_to_workflow wdw on wdw.workflow_id = qm.message_id
+	where qm.queue_name = '_deciderQueue' group by wdw.workflow_def;
+	
+select count(*) from pg_stat_activity where datname='ncp01p1';	
+SELECT * from task_scheduled where task_id = '0a9faccb-1469-48a8-8065-020a7f6782ad';
+
+select count(*) from queue_message where queue_name <> 'TES_DONE_TASK' and queue_name <> '_deciderQueue';
+
+select distinct queue_name, count(queue_name) from queue_message group by queue_name;
+select * from queue_message where queue_name = 'SIO_ETD_DONE_TASK';
+
+SELECT count(*) FROM workflow WHERE modified_on between '2021-01-25' and '2021-01-26';
+
+SELECT count(*) FROM queue_message WHERE queue_name = '_deciderQueue' and popped = false and deliver_on < '2021-01-01';
+SELECT count(*) FROM queue_message WHERE queue_name = '_deciderQueue' and popped = false and deliver_on between '2021-01-20' and '2021-01-21';
+SELECT * FROM queue_message WHERE queue_name = '_deciderQueue' and popped = false and deliver_on > '2021-01-22' limit 10;
+
+select * from workflow_def_to_workflow where workflow_def = 'SSI_GRS_LGRT_BATCH_WF' order by modified_on desc;
+
+select distinct workflow_def, count(workflow_def) from queue_message qm inner join workflow_def_to_workflow wd on wd.workflow_id = qm.message_id where queue_name = '_deciderQueue' group by workflow_def ;
+select count(*) from queue_message qm inner join workflow_def_to_workflow wd on wd.workflow_id = qm.message_id where queue_name = '_deciderQueue' and workflow_def = 'cwf_entry_exception_workflow_1.0' and modified_on < '2020-12-01';
+select count(*) from queue_message qm inner join workflow_def_to_workflow wd on wd.workflow_id = qm.message_id where queue_name = '_deciderQueue' and workflow_def = 'claims_workflow_task_creation_workflow_1.0' and modified_on < '2020-12-01';
+select workflow_id from queue_message qm inner join workflow_def_to_workflow wd on wd.workflow_id = qm.message_id where queue_name = '_deciderQueue' and workflow_def = 'claims_workflow_task_creation_workflow_1.0' and modified_on < '2020-12-01' limit 10;
+
+select * from queue_message where message_id = '00285fd0-bd63-4e68-ae70-a58494a24e15';
+select * from queue_message where message_id = 'c8907ee1-64c1-4e94-89a9-bf7bed3e0c1b';
+
+select distinct queue_name, count(queue_name) from queue_message group by queue_name;
+SELECT * FROM queue_message WHERE queue_name = '_deciderQueue' and popped = false ORDER BY priority DESC, deliver_on, created_on LIMIT 40;
+
+SELECT * FROM queue_message WHERE queue_name = 'TES_DONE_TASK' and popped = false ORDER BY priority DESC, deliver_on, created_on LIMIT 40;
+SELECT count(*) FROM queue_message WHERE queue_name = 'TES_DONE_TASK' and popped = false and deliver_on < '2021-01-20';
+SELECT count(*) FROM queue_message WHERE queue_name = 'TES_DONE_TASK' and popped = false;
+SELECT count(*) FROM queue_message WHERE queue_name = 'TES_DONE_TASK' and popped = true;
+SELECT message_id FROM queue_message WHERE queue_name = 'TES_DONE_TASK' and popped = true;
+SELECT * FROM queue_message WHERE popped = true order by deliver_on limit 100;
+select * from queue_message where message_id = '5fe263d6-78c4-4cd7-85c2-7d371acf9bdb';
+select distinct queue_name, count(queue_name) from queue_message group by queue_name;
+
+SELECT count(*) FROM queue_message WHERE popped = true;
+SELECT count(*) FROM queue_message;
+SELECT * FROM queue_message WHERE popped = true order by deliver_on offset 1250000 limit 100;
+
+select count(*) from pg_stat_activity where datname='ncp01s1';	
+select count(*) from pg_stat_activity where datname='ncp01d1';	
+
+select * from queue_message where queue_name = 'Orfatt_Task_Testing6';
+delete from queue_message where queue_name = 'Orfatt_Task_Testing6' and message_id = '18e8f8e9-07b7-4185-a420-5e528a2392b3';
+
+SELECT * FROM queue_message WHERE message_id in ('fb4a754d-d1b1-4319-9a0a-965f5db665ef','97574428-8702-416b-8e24-dbaba4889f9c','3232e19b-184c-478d-a070-26bdb31463ec','34d783c5-f396-4880-985d-8841eca34168','ad44d772-6910-4cd8-88e0-8cbdfa8d1d04');
+UPDATE queue_message set popped = true WHERE message_id in ('fb4a754d-d1b1-4319-9a0a-965f5db665ef','97574428-8702-416b-8e24-dbaba4889f9c','3232e19b-184c-478d-a070-26bdb31463ec','34d783c5-f396-4880-985d-8841eca34168','ad44d772-6910-4cd8-88e0-8cbdfa8d1d04');
+
+SELECT * FROM queue_message WHERE popped = true AND (deliver_on + (60 ||' seconds')::interval)  <  current_timestamp order by deliver_on limit 1000;
+
+SELECT count(*) FROM queue_message WHERE popped = true AND (deliver_on + (60 ||' seconds')::interval)  <  current_timestamp
+
+select * from event_execution where message_id = '28f7679f-ea50-4218-8970-1e916170d8a4';
+
+select * from queue_message where queue_name = 'SSO_RPM_CHECK_HOME_PLAN_ACK_TASK' LIMIT 10;

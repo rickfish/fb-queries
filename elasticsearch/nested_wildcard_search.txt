@@ -1,0 +1,10 @@
+GET conductor_*_workflow*/_search
+{
+  "query": {
+    "query_string":{
+      "query":"Purn?ma",
+      "fields":["tags.claimType"],
+      "lenient": true
+    }
+  }
+}

@@ -1,0 +1,103 @@
+GET /_cat/aliases/conductor_prod_task
+GET /_cat/aliases/conductor_prod_workflow
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_prod_task_*_*", "alias" : "conductor_prod_task" } }
+      ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_prod_workflow_*_*", "alias" : "conductor_prod_workflow" } }
+      ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_prod_workflow_*", "alias" : "conductor_prod_workflow" } },
+        { "remove" : { "index" : "conductor_prod_task_*", "alias" : "conductor_prod_task" } },
+        { "add" : { "index" : "conductor_prod_workflow_*_*", "alias" : "conductor_prod_workflow" } },
+        { "add" : { "index" : "conductor_prod_task_*_*", "alias" : "conductor_prod_task" } }
+    ]
+}
+
+GET _search
+{
+  "query": {
+    "match_all": {}
+  }
+}
+
+GET conductor_prod_task_*/_search?q=taskDefName:WPM_COMMON_CLOSE_INVENTORY_TASK&sort=updateTime:desc
+
+GET conductor_prod_task_*/_search?q=taskId:fc0e5a1a-95bf-4c30-b71e-a1933f7beddc
+
+GET conductor_prod_task_*/_search?q=updateTime:[2020-03-01 TO *]
+{
+  "size":0,
+  "collapse" : {
+        "field" : "taskId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "taskId"
+           }
+        }
+     }
+} 
+
+GET conductor_prod_workflow_*/_search?q=updateTime:[2020-03-01 TO *]
+{
+  "size":0,
+  "collapse" : {
+        "field" : "workflowId" 
+    },
+    "aggs": {
+        "dedup": {
+           "cardinality": {
+              "field": "workflowId"
+           }
+        }
+     }
+} 
+
+GET conductor_prod_workflow/_search?q=_exists_:tags.secRole AND NOT(tags.secRole:null) AND NOT(tags.secRole:GEN) AND NOT(tags.secRole:SEN) AND NOT(tags.secRole:BCH) AND NOT(tags.secRole:BLU) AND NOT(tags.secRole:EMP) AND NOT(tags.secRole:SAO) AND NOT(tags.secRole:FEP)
+{
+  "size":1000
+}
+
+GET conductor_prod_workflow/_count?q=!(_exists_:tags.secRole)
+GET conductor_prod_workflow/_count?q=_exists_:tags.secRole
+GET conductor_prod_workflow/_search?q=tags.secRole:null
+
+GET conductor_prod_workflow/_count?q=tags.secRole:GEN
+GET conductor_prod_workflow/_count?q=tags.secRole:GEN AND status:RUNNING
+GET conductor_prod_workflow/_count?q=tags.secRole:FEP
+GET conductor_prod_workflow/_count?q=tags.secRole:SAO
+GET conductor_prod_workflow/_count?q=tags.secRole:EMP
+GET conductor_prod_workflow/_count?q=tags.secRole:BLU
+GET conductor_prod_workflow/_count?q=tags.secRole:BCH
+GET conductor_prod_workflow/_count?q=tags.secRole:SEN
+
+GET conductor_prod_workflow/_count
+GET conductor_prod_workflow/_count?q=status:RUNNING
+GET conductor_prod_workflow/_count?q=!(status:RUNNING)
+
+GET conductor_prod_task/_count?q=tags.secRole:GEN AND status:IN_PROGRESS
+GET conductor_prod_task/_count?q=tags.secRole:FEP
+GET conductor_prod_task/_count?q=tags.secRole:SAO
+GET conductor_prod_task/_count?q=tags.secRole:EMP
+GET conductor_prod_task/_count?q=tags.secRole:BLU
+GET conductor_prod_task/_count?q=tags.secRole:BCH
+GET conductor_prod_task/_count?q=tags.secRole:SEN
+
+GET conductor_prod_task/_count
+GET conductor_prod_task/_count?q=status:SCHEDULED
+GET conductor_prod_task/_count?q=status:IN_PROGRESS
+GET conductor_prod_task/_count?q=status:SCHEDULED OR status:IN_PROGRESS
+GET conductor_prod_task/_count?q=!(status:IN_PROGRESS) AND !(status:SCHEDULED)

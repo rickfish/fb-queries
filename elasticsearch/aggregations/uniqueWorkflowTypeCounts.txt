@@ -1,0 +1,10 @@
+GET conductor_prod_workflow*/_search
+{
+  "size":0,
+	"aggs" : {
+		"uniq_workflow" : {
+			"terms" : { "field" : "workflowType", "size":1000 }
+		}
+	}
+}
+

@@ -1,0 +1,7 @@
+find how many workflows between a range:
+
+http://edclesmd201.bcbsfl.com:9200/conductor/_count?q=_type:workflow+startTime:[%222019-02-22T00:00:00%22%20TO%20%222019-02-24T23:59:59%22]
+
+List up to 10,000 of those workflows
+
+http://edclesmd201.bcbsfl.com:9200/conductor/_search?pretty=true&size=10000&q=_type:workflow+startTime:[%222019-02-22T00:00:00%22%20TO%20%222019-02-24T23:59:59%22]

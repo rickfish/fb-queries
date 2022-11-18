@@ -1,0 +1,46 @@
+Old indexes
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_unitb_workflow_*", "alias" : "conductor_unitb_workflow" } },
+        { "remove" : { "index" : "conductor_unitb_task_*", "alias" : "conductor_unitb_task" } }
+    ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "add" : { "index" : "conductor_unitb_workflow_*", "alias" : "conductor_unitb_workflow" } },
+        { "add" : { "index" : "conductor_unitb_task_*", "alias" : "conductor_unitb_task" } }
+    ]
+}
+
+New indexes
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_unitb_workflow_*_*", "alias" : "conductor_unitb_workflow" } },
+        { "remove" : { "index" : "conductor_unitb_task_*_*", "alias" : "conductor_unitb_task" } }
+    ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "add" : { "index" : "conductor_unitb_workflow_*_*", "alias" : "conductor_unitb_workflow" } },
+        { "add" : { "index" : "conductor_unitb_task_*_*", "alias" : "conductor_unitb_task" } }
+    ]
+}
+
+Remove old, add new
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_unita_workflow_*", "alias" : "conductor_unita_workflow" } },
+        { "remove" : { "index" : "conductor_unita_task_*", "alias" : "conductor_unita_workflow" } },
+        { "remove" : { "index" : "conductor_unita_task_*", "alias" : "conductor_unita_task" } },
+        { "add" : { "index" : "conductor_unita_workflow_*_*", "alias" : "conductor_unita_workflow" } },
+        { "add" : { "index" : "conductor_unita_task_*_*", "alias" : "conductor_unita_task" } },
+        { "remove" : { "index" : "conductor_unita_task_log_*", "alias" : "conductor_unita_task" } }
+    ]
+}

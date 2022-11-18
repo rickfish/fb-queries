@@ -1,0 +1,34 @@
+# Create the index
+PUT /conductor_prod_tasklog_before_2021
+
+PUT /conductor_prod_tasklog_before_2021/_settings
+{
+  "index" : {
+    "number_of_replicas" : 0,
+    "refresh_interval" : -1
+  }
+}
+
+# reindex the data
+POST _reindex?wait_for_completion=false&slices=auto
+{
+  "source": {
+    "index": "conductor_prod_tasklog_201911,conductor_prod_tasklog_201912,conductor_prod_tasklog_202001,conductor_prod_tasklog_202002,conductor_prod_tasklog_202003,conductor_prod_tasklog_202004,conductor_prod_tasklog_202005,conductor_prod_tasklog_202006,conductor_prod_tasklog_2020.06,conductor_prod_tasklog_2020.07,conductor_prod_tasklog_2020.08,conductor_prod_tasklog_2020.09,conductor_prod_tasklog_2020.10,conductor_prod_tasklog_2020.11,conductor_prod_tasklog_2020.12"
+  },
+  "dest": {
+    "index": "conductor_prod_tasklog_before_2021"
+  }
+}
+
+GET _tasks/
+
+PUT /conductor_prod_tasklog_before_2021/_settings
+{
+  "index" : {
+    "number_of_replicas" : 1,
+    "refresh_interval" : "1s"
+  }
+}
+ 
+# delete the old indices
+DELETE /conductor_prod_tasklog_2019*,conductor_prod_tasklog_2020*

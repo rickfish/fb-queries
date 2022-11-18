@@ -1,0 +1,9 @@
+GET conductor_stage_workflow/_search?q=@timestamp:[2019-09-29T20:00:00 TO 2019-09-30T12:00:00]
+{
+  "size":0,
+	"aggs" : {
+		"uniq_workflow" : {
+			"terms" : { "field" : "workflowType" }
+		}
+	}
+}

@@ -1,0 +1,20 @@
+POST /_aliases
+{
+    "actions" : [
+        { "add" : { "index" : "conductor_stage_task_201909", "alias" : "conductor_stage_task" } }
+    ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "add" : { "index" : "conductor_stage_workflow_201909", "alias" : "conductor_stage_workflow" } }
+    ]
+}
+
+POST /_aliases
+{
+    "actions" : [
+        { "remove" : { "index" : "conductor_unita_task_1234", "alias" : "conductor_unita_task" } }
+    ]
+}

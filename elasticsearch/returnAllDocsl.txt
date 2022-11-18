@@ -1,0 +1,6 @@
+GET conductor_prod_workflow*/_search
+{
+  "query": {
+    "match_all": {}
+  }
+}

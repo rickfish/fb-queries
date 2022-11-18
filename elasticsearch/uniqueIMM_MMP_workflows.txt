@@ -1,0 +1,14 @@
+GET conductor_testa_workflow/_search?q=workflowType:IMM_MMP_* AND startTime:[2021-10-01 TO *] 
+{   
+  "size": 0,
+  "aggs": 
+  {  
+    "workflow_count": 
+    {     
+      "terms": 
+      {
+        "field": "workflowType"
+      }
+    }
+  }
+}

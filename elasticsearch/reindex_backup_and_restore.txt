@@ -1,0 +1,71 @@
+PUT /conductor_prod_workflow_sao_2021_backup
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "index" : "conductor_prod_workflow_sao_2021_backup", "alias" : "conductor_prod_workflow" } }
+  ]
+}
+PUT /conductor_prod_workflow_sao_2021_backup/_settings
+{
+  "index" : {
+    "number_of_replicas" : 0,
+    "refresh_interval" : -1
+  }
+}
+POST _reindex?wait_for_completion=false&slices=auto
+{
+  "source": {
+    "index": "conductor_prod_workflow_sao_2021"
+  },
+  "dest": {
+    "index": "conductor_prod_workflow_sao_2021_backup"
+  }
+}
+
+GET _tasks/<task id>
+
+PUT /conductor_prod_workflow_sao_2021_backup/_settings
+{
+  "index" : {
+    "number_of_replicas" : 1,
+    "refresh_interval" : "1s"
+  }
+}
+
+PUT /_snapshot/s3_prod_v2_repository/conductor_prod_workflow_sao_2021?wait_for_completion=false
+{
+  "indices": "conductor_prod_workflow_sao_2021_backup",
+  "include_global_state": false
+}
+
+GET _snapshot/s3_prod_v2_repository/conductor_prod_workflow_sao_2021/_status
+
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "index" : "conductor_prod_workflow_sao_2021", "alias" : "conductor_prod_workflow" } },
+    { "add" : { "index" : "conductor_prod_workflow_sao_2021_backup", "alias" : "conductor_prod_workflow" } }
+  ]
+}
+
+DELETE /conductor_prod_workflow_sao_2021
+
+POST /_snapshot/s3_prod_v2_repository/conductor_prod_workflow_sao_2021/_restore
+{
+  "indices": "conductor_prod_workflow_sao_2021_backup",
+  "ignore_unavailable": false,
+  "rename_pattern": "conductor_prod_workflow_sao_2021_backup",
+  "rename_replacement": "conductor_prod_workflow_sao_2021",
+  "include_aliases": false
+}
+
+POST /_aliases
+{
+  "actions" : [
+    { "remove" : { "index" : "conductor_prod_workflow_sao_2021_backup", "alias" : "conductor_prod_workflow" } },
+    { "add" : { "index" : "conductor_prod_workflow_sao_2021", "alias" : "conductor_prod_workflow" } }
+  ]
+}
+DELETE /conductor_prod_workflow_sao_2021_backup
+DELETE _snapshot/s3_prod_v2_repository/conductor_prod_workflow_sao_2021
+

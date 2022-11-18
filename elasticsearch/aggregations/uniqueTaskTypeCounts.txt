@@ -1,0 +1,9 @@
+GET conductor_prod_task*/_search
+{
+  "size":0,
+	"aggs" : {
+		"uniq_task" : {
+			"terms" : { "field" : "taskType", "size":1000 }
+		}
+	}
+}

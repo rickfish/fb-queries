@@ -1,0 +1,4 @@
+GET conductor_testa_task/_search?filter_path=hits.hits._index,hits.hits.index,hits.hits._source.workflowType,hits.hits._source.@timestamp&q=@timestamp:[2018-01-31 TO *] AND status:IN_PROGRESS
+{
+  "size":200
+}
